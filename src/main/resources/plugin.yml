@@ -1,0 +1,6 @@
+name: AdaptersLib
+version: '${version}'
+
+main: net.craftoriya.adaptersLib.AdaptersLib
+api-version: '26.1.2'
+load: STARTUP
