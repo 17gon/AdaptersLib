@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.17gon"
-version = "0.1.4-SNAPSHOT"
+version = "0.1.6-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -41,8 +41,8 @@ publishing {
             url = uri("https://maven.pkg.github.com/17gon/AdaptersLib")
 
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }

@@ -6,12 +6,17 @@ import org.bukkit.plugin.java.JavaPlugin
 class AdaptersLib : JavaPlugin() {
 
     companion object {
-        lateinit var eventBus: DomainEventBus
+        lateinit var instance: AdaptersLib
             private set
+
+        val eventBus get() = instance._eventBus
     }
 
+    private lateinit var _eventBus: DomainEventBus
+
     override fun onEnable() {
-        eventBus = DomainEventBus()
+        instance = this
+        _eventBus = DomainEventBus()
         logger.info("AdapterLib loaded.")
     }
 
