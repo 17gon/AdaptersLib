@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "2.4.0-Beta1"
 }
 
-group = "net.craftoriya"
+group = "com.github.17gon"
 version = "0.1.0-SNAPSHOT"
 
 repositories {
@@ -30,6 +30,7 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            artifactId = "adapterslib"
             from(components["java"])
         }
     }
