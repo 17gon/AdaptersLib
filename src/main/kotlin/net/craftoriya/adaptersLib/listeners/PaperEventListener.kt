@@ -7,9 +7,9 @@ import net.craftoriya.adaptersLib.event.DomainEventBus
 import net.craftoriya.adaptersLib.event.events.PlayerJumpDomainEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import java.util.EventListener
+import org.bukkit.event.Listener
 
-class PaperEventListener(private val bus: DomainEventBus): EventListener {
+class PaperEventListener(private val bus: DomainEventBus): Listener {
 
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)//I have questions why I should listen to those
