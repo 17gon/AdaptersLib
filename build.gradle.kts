@@ -1,8 +1,11 @@
 plugins {
+    `maven-publish`
+
     kotlin("jvm") version "2.4.0-Beta1"
-    id("com.gradleup.shadow") version "9.4.1"
-    id("xyz.jpenilla.run-paper") version "3.0.2"
 }
+
+group = "net.craftoriya"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
@@ -14,27 +17,32 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
-kotlin {
-    jvmToolchain(25)
-}
+kotlin { jvmToolchain(25) }
 
 tasks {
-    build {
-        dependsOn(shadowJar)
-    }
-
-    runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("26.1.2")
-        jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
-    }
-
     processResources {
         val props = mapOf("version" to version)
         filesMatching("plugin.yml") {
             expand(props)
+        }
+    }
+}
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/17gon/AdaptersLib")
+
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }
