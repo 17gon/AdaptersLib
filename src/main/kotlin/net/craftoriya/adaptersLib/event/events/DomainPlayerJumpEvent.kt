@@ -4,7 +4,7 @@ import net.craftoriya.adaptersLib.containers.PlayerContainer
 import net.craftoriya.adaptersLib.event.Cancellable
 import net.craftoriya.adaptersLib.event.DomainEvent
 //Simple event container, no function should be here
-class PlayerJumpDomainEvent(
+class DomainPlayerJumpEvent(
     val player: PlayerContainer,
     override var isCancelled: Boolean = false
 ): DomainEvent(), Cancellable
