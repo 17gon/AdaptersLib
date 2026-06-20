@@ -1,5 +1,6 @@
 package net.craftoriya.adaptersLib.containers
 
+import net.craftoriya.adaptersLib.tools.Vec3D
 import java.util.UUID
 
 data class PlayerContainer(

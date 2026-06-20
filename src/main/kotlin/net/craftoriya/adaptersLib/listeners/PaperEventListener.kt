@@ -1,17 +1,17 @@
 package net.craftoriya.adaptersLib.listeners
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent
-import jdk.internal.vm.ThreadContainers.container
 import net.craftoriya.adaptersLib.containers.CraftingGridContainer
 import net.craftoriya.adaptersLib.containers.InventoryTypeDomain
 import net.craftoriya.adaptersLib.containers.ItemContainer
 import net.craftoriya.adaptersLib.containers.PlayerContainer
-import net.craftoriya.adaptersLib.containers.Vec3D
+import net.craftoriya.adaptersLib.tools.Vec3D
 import net.craftoriya.adaptersLib.event.DomainEventBus
 import net.craftoriya.adaptersLib.event.events.DomainCraftingCompleteEvent
 import net.craftoriya.adaptersLib.event.events.DomainPrepareItemCraftEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJumpEvent
 import net.craftoriya.adaptersLib.mappers.ItemStackMapper
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -51,9 +51,12 @@ class PaperEventListener(private val bus: DomainEventBus): Listener {
         }
         val grid = CraftingGridContainer(type, items)
         val domainEvent = DomainPrepareItemCraftEvent(grid, event.isRepair)
+
         bus.publish(domainEvent)
         if (domainEvent.result != null) {
             event.inventory.result = itemMapper.toItemStack(domainEvent.result!!)
+        } else {
+            event.inventory.result = ItemStack(Material.AIR)
         }
     }
 

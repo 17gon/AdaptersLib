@@ -18,7 +18,7 @@ internal object ItemStackMapper {
                 meta.setDisplayName(container.name)
             }
 
-            // simple properties mapping (you can expand later)
+            // simple properties mapping (I can expand later)
             container.properties.forEach { (key, value) ->
                 // example placeholder logic
                 if (key == "lore") {

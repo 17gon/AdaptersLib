@@ -1,4 +1,4 @@
-package net.craftoriya.adaptersLib.containers
+package net.craftoriya.adaptersLib.tools
 
 data class Vec3D(val x: Double, val y: Double, val z: Double)
 
