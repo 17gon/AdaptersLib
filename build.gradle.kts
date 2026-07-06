@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.17gon"
-version = "0.1.7-SNAPSHOT"
+version = "0.1.8-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -17,6 +17,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
     implementation("org.spongepowered:configurate-extra-kotlin:4.1.2")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
 kotlin { jvmToolchain(25) }
