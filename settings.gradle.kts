@@ -1,1 +1,1 @@
-rootProject.name = "AdaptersLib"
+rootProject.name = "adapterslib"

@@ -5,15 +5,22 @@ import net.craftoriya.adaptersLib.tools.configs.ConfigLoader
 import net.craftoriya.adaptersLib.tools.configs.ConfigLoaderConfiguratorBuilder
 import org.bukkit.plugin.java.JavaPlugin
 import org.spongepowered.configurate.yaml.NodeStyle
+import java.io.File
 
 class AdaptersLib : JavaPlugin() {
 
     companion object {
         lateinit var instance: AdaptersLib
             private set
-
         val eventBus get() = instance._eventBus
-        val configLoader get() = instance._configLoader
+        fun configLoader(dataFolder: File) = ConfigLoader(dataFolder, ".yml",
+            ConfigLoaderConfiguratorBuilder.yaml()
+                .peekBuilder {
+                    it.indent(2)
+                    it.nodeStyle(NodeStyle.BLOCK)
+                }
+                .build()
+        )
     }
 
     private lateinit var _eventBus: DomainEventBus

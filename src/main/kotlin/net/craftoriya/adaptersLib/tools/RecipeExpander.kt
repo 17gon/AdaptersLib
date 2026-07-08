@@ -1,4 +1,10 @@
-package net.craftoriya.adaptersLib.containers
+package net.craftoriya.adaptersLib.tools
+
+import net.craftoriya.adaptersLib.containers.ItemContainer
+import net.craftoriya.adaptersLib.containers.RecipeContainer
+import net.craftoriya.adaptersLib.containers.RecipeDto
+import net.craftoriya.adaptersLib.containers.RecipesConfig
+import net.craftoriya.adaptersLib.containers.TagsConfig
 
 object RecipeExpander {
     fun expand(recipes: RecipesConfig, tags: TagsConfig): List<RecipeContainer> =
@@ -12,7 +18,7 @@ object RecipeExpander {
                 val ref = dto.key[char.toString()] ?: return@forEachIndexed
                 val material = if (ref.startsWith("#"))
                     tags[ref.removePrefix("#")]?.firstOrNull() ?: return@forEachIndexed
-                else ref
+                else ref.uppercase()
                 pattern[row * 3 + col] = ItemContainer(material, material, 1, emptyMap())
             }
         }
