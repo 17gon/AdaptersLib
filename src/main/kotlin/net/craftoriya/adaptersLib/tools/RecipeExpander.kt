@@ -17,13 +17,13 @@ object RecipeExpander {
                 if (char == ' ') return@forEachIndexed
                 val ref = dto.key[char.toString()] ?: return@forEachIndexed
                 val material = if (ref.startsWith("#"))
-                    tags[ref.removePrefix("#")]?.firstOrNull() ?: return@forEachIndexed
+                    tags[ref.removePrefix("#")]?.firstOrNull()?.uppercase() ?: return@forEachIndexed
                 else ref.uppercase()
-                pattern[row * 3 + col] = ItemContainer(material, material, 1, emptyMap())
+                pattern[row * 3 + col] = ItemContainer("", material, 1, emptyMap())
             }
         }
         return RecipeContainer.Shaped(
-            ItemContainer(dto.output, dto.output, dto.count, emptyMap()),
+            ItemContainer("", dto.output, dto.count, emptyMap()),
             pattern
         )
     }

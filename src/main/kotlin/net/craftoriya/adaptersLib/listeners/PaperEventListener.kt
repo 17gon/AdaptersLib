@@ -8,6 +8,7 @@ import net.craftoriya.adaptersLib.containers.PlayerContainer
 import net.craftoriya.adaptersLib.tools.Vec3D
 import net.craftoriya.adaptersLib.event.DomainEventBus
 import net.craftoriya.adaptersLib.event.events.DomainCraftingCompleteEvent
+import net.craftoriya.adaptersLib.event.events.DomainPlayerJoinEvent
 import net.craftoriya.adaptersLib.event.events.DomainPrepareItemCraftEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJumpEvent
 import net.craftoriya.adaptersLib.mappers.ItemStackMapper
@@ -18,11 +19,24 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.CraftItemEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.PrepareItemCraftEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 class PaperEventListener(private val bus: DomainEventBus): Listener {
     private val itemMapper: ItemStackMapper = ItemStackMapper
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        val player = event.player
+        val pos = Vec3D(player.location.x, player.location.y, player.location.z)
+        val playerContainer = PlayerContainer(player.uniqueId, player.name, pos, player.isOnGround)
+
+        val domainEvent = DomainPlayerJoinEvent(playerContainer, event.joinMessage())
+
+        bus.publish(domainEvent)
+    }
+
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     fun onPlayerJump(event: PlayerJumpEvent) {
