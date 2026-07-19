@@ -8,10 +8,14 @@ import org.bukkit.Bukkit
 import org.bukkit.Keyed
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.inventory.BlastingRecipe
+import org.bukkit.inventory.CampfireRecipe
+import org.bukkit.inventory.FurnaceRecipe
 import org.bukkit.inventory.RecipeChoice
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.SmokingRecipe
 import org.bukkit.plugin.Plugin
 import kotlin.collections.chunked
 import kotlin.collections.joinToString
@@ -21,13 +25,15 @@ class RecipeBookPort (
 ): IRecipeBookPort {
 
     override fun registerRecipe(key: String, recipe: RecipeContainer) {
-        val nsKey = NamespacedKey(plugin, key)
+        val actualKey = if (recipe is RecipeContainer.Cooking) "${key}_${recipe.type}" else key
+        val nsKey = NamespacedKey(plugin, actualKey)
         Bukkit.removeRecipe(nsKey)
 
         val outputStack = ItemStack(Material.valueOf(recipe.output.material), recipe.output.count)
         when (recipe) {
             is RecipeContainer.Shaped -> createShaped(nsKey, outputStack, recipe)
             is RecipeContainer.Shapeless -> createShapeless(nsKey, outputStack, recipe)
+            is RecipeContainer.Cooking -> createCooking(nsKey, recipe)
         }
     }
 
@@ -43,7 +49,8 @@ class RecipeBookPort (
 
 
     public fun replaceRecipe(key: String, recipe: RecipeContainer) {
-        unregisterRecipe(key)
+        val actualKey = if (recipe is RecipeContainer.Cooking) "${key}_${recipe.type}" else key
+        unregisterRecipe(actualKey)
         registerRecipe(key, recipe)
     }
 
@@ -86,5 +93,21 @@ class RecipeBookPort (
             shapeless.addIngredient(RecipeChoice.MaterialChoice(Material.valueOf(it.material)))
         }
         Bukkit.addRecipe(shapeless)
+    }
+
+    private fun createCooking(nsKey: NamespacedKey, recipe: RecipeContainer.Cooking) {
+        removeVanillaRecipesFor(recipe.output)
+        Bukkit.removeRecipe(nsKey)
+
+        val outputStack = ItemStack(Material.valueOf(recipe.output.material), recipe.output.count)
+        val input = RecipeChoice.MaterialChoice(Material.valueOf(recipe.input.material))
+
+        val cookingRecipe = when (recipe.type) {
+            RecipeContainer.CookingType.FURNACE  -> FurnaceRecipe(nsKey, outputStack, input, recipe.experience, recipe.cookingTick)
+            RecipeContainer.CookingType.BLASTING -> BlastingRecipe(nsKey, outputStack, input, recipe.experience, recipe.cookingTick)
+            RecipeContainer.CookingType.SMOKING  -> SmokingRecipe(nsKey, outputStack, input, recipe.experience, recipe.cookingTick)
+            RecipeContainer.CookingType.CAMPFIRE -> CampfireRecipe(nsKey, outputStack, input, recipe.experience, recipe.cookingTick)
+        }
+        Bukkit.addRecipe(cookingRecipe)
     }
 }

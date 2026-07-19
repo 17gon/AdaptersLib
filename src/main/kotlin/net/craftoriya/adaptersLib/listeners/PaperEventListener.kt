@@ -5,21 +5,32 @@ import net.craftoriya.adaptersLib.containers.CraftingGridContainer
 import net.craftoriya.adaptersLib.containers.InventoryTypeDomain
 import net.craftoriya.adaptersLib.containers.ItemContainer
 import net.craftoriya.adaptersLib.containers.PlayerContainer
+import net.craftoriya.adaptersLib.containers.RecipeContainer
 import net.craftoriya.adaptersLib.tools.Vec3D
 import net.craftoriya.adaptersLib.event.DomainEventBus
 import net.craftoriya.adaptersLib.event.events.DomainCraftingCompleteEvent
+import net.craftoriya.adaptersLib.event.events.DomainFurnaceSmeltEvent
+import net.craftoriya.adaptersLib.event.events.DomainFurnaceStartSmeltEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJoinEvent
 import net.craftoriya.adaptersLib.event.events.DomainPrepareItemCraftEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJumpEvent
 import net.craftoriya.adaptersLib.mappers.ItemStackMapper
 import org.bukkit.Material
+import org.bukkit.block.BlastFurnace
+import org.bukkit.block.Block
+import org.bukkit.block.Campfire
+import org.bukkit.block.Furnace
+import org.bukkit.block.Smoker
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.CraftItemEvent
+import org.bukkit.event.inventory.FurnaceSmeltEvent
+import org.bukkit.event.inventory.FurnaceStartSmeltEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.PrepareItemCraftEvent
 import org.bukkit.event.player.PlayerJoinEvent
+import org.bukkit.inventory.CookingRecipe
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
@@ -91,6 +102,32 @@ class PaperEventListener(private val bus: DomainEventBus): Listener {
         if (domainEvent.isCancelled) event.isCancelled = true
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    fun onPrepareFurnaceSmeltEvent(event: FurnaceStartSmeltEvent) {
+        val domainRecipe = buildDomainCooking(event.recipe, event.source, event.block) ?: return
+        val domainEvent = DomainFurnaceStartSmeltEvent(event.totalCookTime, domainRecipe)
+        bus.publish(domainEvent)
+        if (domainEvent.isCancelled) {
+//            (event.block as? Furnace)?.inventory?.result = ItemStack(Material.AIR)
+            event.totalCookTime = 0
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    fun onFurnaceSmeltEvent(event: FurnaceSmeltEvent) {
+        val recipe = event.recipe ?: return println("The recipe is null")
+        val domainRecipe = buildDomainCooking(recipe, event.source, event.block) ?: return println("The domain cooking is null")
+        val domainEvent = DomainFurnaceSmeltEvent(domainRecipe)
+        bus.publish(domainEvent)
+        println("Furnace Smelt event received")
+        if (domainEvent.isCancelled) {
+            event.isCancelled = true
+            event.result = ItemStack(Material.AIR)
+        } else {
+            (event.block.state as Furnace).inventory.smelting?.amount -= domainEvent.extraToConsume
+        }
+    }
+
     private fun buildItemContainer(item: ItemStack): ItemContainer {
         val data = mutableMapOf<String, String>()
         item.itemMeta?.let { meta ->
@@ -113,5 +150,24 @@ class PaperEventListener(private val bus: DomainEventBus): Listener {
             item.amount,
             data
         )
+    }
+
+    private fun buildDomainCooking(recipe: CookingRecipe<*>, source: ItemStack, block: Block): RecipeContainer.Cooking? {
+        val type = cookingTypeOf(block) ?: return null
+        return RecipeContainer.Cooking(
+            buildItemContainer(recipe.result),
+            buildItemContainer(source),
+            recipe.experience,
+            recipe.cookingTime,
+            type
+        )
+    }
+
+    private fun cookingTypeOf(block: Block): RecipeContainer.CookingType? = when (val state = block.state) {
+        is BlastFurnace -> RecipeContainer.CookingType.BLASTING;
+        is Smoker -> RecipeContainer.CookingType.SMOKING;
+        is Furnace -> RecipeContainer.CookingType.FURNACE;
+        is Campfire -> RecipeContainer.CookingType.CAMPFIRE;
+        else -> null
     }
 }

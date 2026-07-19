@@ -4,6 +4,8 @@ import net.craftoriya.adaptersLib.event.DomainEventBus
 import net.craftoriya.adaptersLib.tools.configs.ConfigLoader
 import net.craftoriya.adaptersLib.tools.configs.ConfigLoaderConfiguratorBuilder
 import org.bukkit.plugin.java.JavaPlugin
+import org.spongepowered.configurate.objectmapping.ObjectMapper
+import org.spongepowered.configurate.util.NamingSchemes
 import org.spongepowered.configurate.yaml.NodeStyle
 import java.io.File
 
@@ -15,6 +17,13 @@ class AdaptersLib : JavaPlugin() {
         val eventBus get() = instance._eventBus
         fun configLoader(dataFolder: File) = ConfigLoader(dataFolder, ".yml",
             ConfigLoaderConfiguratorBuilder.yaml()
+                .defaultOptions { opts ->
+                    opts?.serializers { it.registerAnnotatedObjects(
+                        ObjectMapper.factoryBuilder()
+                            .defaultNamingScheme(NamingSchemes.PASSTHROUGH)
+                            .build()
+                    ) }
+                }
                 .peekBuilder {
                     it.indent(2)
                     it.nodeStyle(NodeStyle.BLOCK)
@@ -24,19 +33,10 @@ class AdaptersLib : JavaPlugin() {
     }
 
     private lateinit var _eventBus: DomainEventBus
-    private lateinit var _configLoader: ConfigLoader
 
     override fun onEnable() {
         instance = this
         _eventBus = DomainEventBus()
-        _configLoader = ConfigLoader(dataFolder, ".yml",
-                ConfigLoaderConfiguratorBuilder.yaml()
-                .peekBuilder { it ->
-                    it.indent(2)
-                    it.nodeStyle(NodeStyle.BLOCK)
-                }
-                .build()
-        )
 
         logger.info("AdapterLib loaded.")
     }

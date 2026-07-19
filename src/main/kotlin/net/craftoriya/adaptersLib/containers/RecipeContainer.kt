@@ -12,4 +12,14 @@ sealed interface RecipeContainer {
         override val output: ItemContainer,
         val ingredients: List<ItemContainer>
     ) : RecipeContainer
+
+    data class Cooking(
+        override val output: ItemContainer,
+        val input: ItemContainer,
+        val experience: Float,
+        val cookingTick: Int,
+        val type: CookingType = CookingType.FURNACE
+    ) : RecipeContainer
+
+    enum class CookingType { FURNACE, BLASTING, SMOKING, CAMPFIRE }
 }
