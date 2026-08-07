@@ -2,6 +2,7 @@ package net.craftoriya.adaptersLib.listeners
 
 import com.destroystokyo.paper.event.player.PlayerJumpEvent
 import net.craftoriya.adaptersLib.containers.CraftingGridContainer
+import net.craftoriya.adaptersLib.containers.EntityContainer
 import net.craftoriya.adaptersLib.containers.InventoryTypeDomain
 import net.craftoriya.adaptersLib.containers.ItemContainer
 import net.craftoriya.adaptersLib.containers.PlayerContainer
@@ -14,6 +15,7 @@ import net.craftoriya.adaptersLib.event.events.DomainFurnaceStartSmeltEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJoinEvent
 import net.craftoriya.adaptersLib.event.events.DomainPrepareItemCraftEvent
 import net.craftoriya.adaptersLib.event.events.DomainPlayerJumpEvent
+import net.craftoriya.adaptersLib.event.events.DomainVillagerInteractEvent
 import net.craftoriya.adaptersLib.mappers.ItemStackMapper
 import org.bukkit.Material
 import org.bukkit.block.BlastFurnace
@@ -21,6 +23,7 @@ import org.bukkit.block.Block
 import org.bukkit.block.Campfire
 import org.bukkit.block.Furnace
 import org.bukkit.block.Smoker
+import org.bukkit.entity.Villager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -29,6 +32,7 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent
 import org.bukkit.event.inventory.FurnaceStartSmeltEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.PrepareItemCraftEvent
+import org.bukkit.event.player.PlayerInteractEntityEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.CookingRecipe
 import org.bukkit.inventory.ItemStack
@@ -115,17 +119,45 @@ class PaperEventListener(private val bus: DomainEventBus): Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     fun onFurnaceSmeltEvent(event: FurnaceSmeltEvent) {
-        val recipe = event.recipe ?: return println("The recipe is null")
-        val domainRecipe = buildDomainCooking(recipe, event.source, event.block) ?: return println("The domain cooking is null")
+        val recipe = event.recipe ?: return
+        val domainRecipe = buildDomainCooking(recipe, event.source, event.block) ?: return
         val domainEvent = DomainFurnaceSmeltEvent(domainRecipe)
         bus.publish(domainEvent)
-        println("Furnace Smelt event received")
         if (domainEvent.isCancelled) {
             event.isCancelled = true
             event.result = ItemStack(Material.AIR)
         } else {
             (event.block.state as Furnace).inventory.smelting?.amount -= domainEvent.extraToConsume
         }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    fun onPlayerInteractEntity(event: PlayerInteractEntityEvent) {
+        val villager = event.rightClicked as? Villager ?: return
+        val player = event.player
+        val pos = Vec3D(player.location.x, player.location.y, player.location.z)
+        val playerContainer = PlayerContainer(player.uniqueId, player.name, pos, player.isOnGround)
+        val entityContainer = EntityContainer(villager.uniqueId, "VILLAGER", villager.name)
+        val profession = mapProfession(villager.profession)
+
+        bus.publish(DomainVillagerInteractEvent(playerContainer, entityContainer, profession, villager.villagerLevel))
+    }
+
+    private fun mapProfession(p: Villager.Profession): RecipeContainer.TradeProfession = when (p) {
+        Villager.Profession.ARMORER -> RecipeContainer.TradeProfession.ARMORER
+        Villager.Profession.BUTCHER -> RecipeContainer.TradeProfession.BUTCHER
+        Villager.Profession.CARTOGRAPHER -> RecipeContainer.TradeProfession.CARTOGRAPHER
+        Villager.Profession.CLERIC -> RecipeContainer.TradeProfession.CLERIC
+        Villager.Profession.FARMER -> RecipeContainer.TradeProfession.FARMER
+        Villager.Profession.FISHERMAN -> RecipeContainer.TradeProfession.FISHERMAN
+        Villager.Profession.FLETCHER -> RecipeContainer.TradeProfession.FLETCHER
+        Villager.Profession.LEATHERWORKER -> RecipeContainer.TradeProfession.LEATHERWORKER
+        Villager.Profession.LIBRARIAN -> RecipeContainer.TradeProfession.LIBRARIAN
+        Villager.Profession.MASON -> RecipeContainer.TradeProfession.MASON
+        Villager.Profession.SHEPHERD -> RecipeContainer.TradeProfession.SHEPHERD
+        Villager.Profession.TOOLSMITH -> RecipeContainer.TradeProfession.TOOLSMITH
+        Villager.Profession.WEAPONSMITH -> RecipeContainer.TradeProfession.WEAPONSMITH
+        else -> RecipeContainer.TradeProfession.NONE
     }
 
     private fun buildItemContainer(item: ItemStack): ItemContainer {

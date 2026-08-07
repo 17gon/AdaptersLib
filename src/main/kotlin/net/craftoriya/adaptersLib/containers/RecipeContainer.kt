@@ -1,5 +1,7 @@
 package net.craftoriya.adaptersLib.containers
 
+import net.craftoriya.adaptersLib.tools.TradeApplyMode
+
 sealed interface RecipeContainer {
     val output: ItemContainer
 
@@ -22,4 +24,24 @@ sealed interface RecipeContainer {
     ) : RecipeContainer
 
     enum class CookingType { FURNACE, BLASTING, SMOKING, CAMPFIRE }
+
+    data class Trades(
+        override val output: ItemContainer,
+        var maxUses: Int,
+        var uses: Int,
+        var demand: Int,
+        var priceMultiplier: Float,
+        var specialPrice: Int,
+        var villagerExperience: Int,
+        var experienceReward: Boolean,
+        var ignoreDiscounts: Boolean,
+        val ingredients: List<ItemContainer>,
+        var level: Int,
+        val mode: TradeApplyMode
+    ): RecipeContainer
+
+    enum class TradeProfession {
+        ARMORER, BUTCHER, CARTOGRAPHER, CLERIC, FARMER, FISHERMAN, FLETCHER, LEATHERWORKER,
+        LIBRARIAN, MASON, NITWIT, SHEPHERD, TOOLSMITH, WEAPONSMITH, NONE
+    }
 }

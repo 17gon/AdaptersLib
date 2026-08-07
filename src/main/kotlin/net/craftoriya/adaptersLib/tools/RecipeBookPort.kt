@@ -1,5 +1,6 @@
 package net.craftoriya.adaptersLib.tools
 
+import net.craftoriya.adaptersLib.containers.EntityContainer
 import net.craftoriya.adaptersLib.containers.ItemContainer
 import net.craftoriya.adaptersLib.containers.PlayerContainer
 import net.craftoriya.adaptersLib.containers.RecipeContainer
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Keyed
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Villager
 import org.bukkit.inventory.BlastingRecipe
 import org.bukkit.inventory.CampfireRecipe
 import org.bukkit.inventory.FurnaceRecipe
@@ -15,6 +17,7 @@ import org.bukkit.inventory.RecipeChoice
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.MerchantRecipe
 import org.bukkit.inventory.SmokingRecipe
 import org.bukkit.plugin.Plugin
 import kotlin.collections.chunked
@@ -34,6 +37,7 @@ class RecipeBookPort (
             is RecipeContainer.Shaped -> createShaped(nsKey, outputStack, recipe)
             is RecipeContainer.Shapeless -> createShapeless(nsKey, outputStack, recipe)
             is RecipeContainer.Cooking -> createCooking(nsKey, recipe)
+            is RecipeContainer.Trades -> null
         }
     }
 
@@ -45,8 +49,6 @@ class RecipeBookPort (
         val bucketPlayer = Bukkit.getPlayer(player.id)?: return
         bucketPlayer.discoverRecipe(NamespacedKey(plugin, key))
     }
-
-
 
     public fun replaceRecipe(key: String, recipe: RecipeContainer) {
         val actualKey = if (recipe is RecipeContainer.Cooking) "${key}_${recipe.type}" else key
@@ -67,8 +69,6 @@ class RecipeBookPort (
         }
         toRemove.forEach { Bukkit.removeRecipe(it) }
     }
-
-
 
     private fun createShaped(nsKey: NamespacedKey, outputStack: ItemStack, recipe: RecipeContainer.Shaped) {
         val shaped = ShapedRecipe(nsKey, outputStack)
