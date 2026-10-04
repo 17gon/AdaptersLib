@@ -12,12 +12,11 @@ class DomainEventBus {
     ) {
         val entry = HandlerEntry(priority, handler)
         handlers.getOrPut(type) { mutableListOf() }.also { list ->
-                list.add(entry)
-                list.sortBy { it.priority.ordinal }
-            }
+            list.add(entry)
+            list.sortBy { it.priority.ordinal }
+        }
     }
 
-    // The same as above. Except usage of it are bus.on<EventType> { ... }
     inline fun <reified T : DomainEvent> on(
         priority: HandlerPriority = HandlerPriority.NORMAL,
         noinline handler: (T) -> Unit
