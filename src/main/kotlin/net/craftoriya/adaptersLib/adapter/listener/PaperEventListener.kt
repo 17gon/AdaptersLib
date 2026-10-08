@@ -17,8 +17,8 @@ import net.craftoriya.adaptersLib.event.domainevents.DomainPlayerJoinEvent
 import net.craftoriya.adaptersLib.event.domainevents.DomainPlayerJumpEvent
 import net.craftoriya.adaptersLib.event.domainevents.DomainPrepareItemCraftEvent
 import net.craftoriya.adaptersLib.event.domainevents.DomainVillagerInteractEvent
-import net.craftoriya.adaptersLib.event.domainevents.InteractAction
 import net.craftoriya.adaptersLib.model.EntityContainer
+import net.craftoriya.adaptersLib.model.InteractAction
 import net.craftoriya.adaptersLib.model.RecipeContainer
 import org.bukkit.Material
 import org.bukkit.block.BlastFurnace

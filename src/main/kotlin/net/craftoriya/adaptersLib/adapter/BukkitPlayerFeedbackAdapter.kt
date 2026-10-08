@@ -9,4 +9,11 @@ class BukkitPlayerFeedbackAdapter : IPlayerFeedbackPort {
     override fun actionBar(id: UUID, text: String) {
         Bukkit.getPlayer(id)?.sendActionBar(Component.text(text))
     }
+
+    override fun glowHeldItem(id: UUID, glow: Boolean) {
+        val inv = Bukkit.getPlayer(id)?.inventory ?: return
+        val item = inv.itemInMainHand.takeIf { !it.isEmpty } ?: return
+        item.editMeta { it.setEnchantmentGlintOverride(if (glow) true else null) }
+        inv.setItemInMainHand(item)
+    }
 }

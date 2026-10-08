@@ -1,9 +1,9 @@
 package net.craftoriya.adaptersLib.adapter.listener
 
 import net.craftoriya.adaptersLib.event.DomainEventBus
-import net.craftoriya.adaptersLib.event.domainevents.BlockChange
 import net.craftoriya.adaptersLib.event.domainevents.DomainBlockChangeEvent
 import net.craftoriya.adaptersLib.adapter.mapper.BlockMapper
+import net.craftoriya.adaptersLib.model.BlockChange
 import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
