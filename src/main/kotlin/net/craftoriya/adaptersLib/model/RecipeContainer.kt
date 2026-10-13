@@ -1,7 +1,5 @@
 package net.craftoriya.adaptersLib.model
 
-import net.craftoriya.adaptersLib.port.TradeApplyMode
-
 sealed interface RecipeContainer {
     val output: ItemContainer
 

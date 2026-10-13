@@ -1,4 +1,4 @@
-package net.craftoriya.adaptersLib.config
+package net.craftoriya.adaptersLib.recipe
 
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 

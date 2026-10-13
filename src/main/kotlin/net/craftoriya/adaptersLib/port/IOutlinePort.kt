@@ -1,5 +1,6 @@
 package net.craftoriya.adaptersLib.port
 
+import net.craftoriya.adaptersLib.model.OutlineMarker
 import java.util.*
 
 interface IOutlinePort {

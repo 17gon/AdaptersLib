@@ -4,6 +4,7 @@ import net.craftoriya.adaptersLib.adapter.mapper.ItemStackMapper.toItemContainer
 import net.craftoriya.adaptersLib.adapter.mapper.ItemStackMapper.toItemStack
 import net.craftoriya.adaptersLib.model.ItemContainer
 import net.craftoriya.adaptersLib.model.LocationIContainer
+import net.craftoriya.adaptersLib.model.SlotItem
 import net.craftoriya.adaptersLib.port.IContainerPort
 import org.bukkit.Bukkit
 import org.bukkit.block.Container
@@ -19,6 +20,17 @@ class BukkitContainerAdapter : IContainerPort {
             sums.merge(s.type.toString(), s.amount, Int::plus)
         }
         return sums.map { ItemContainer(material = it.key, count = it.value) }
+    }
+
+    override fun slots(at: LocationIContainer): List<SlotItem> {
+        val inv = inventory(at) ?: return emptyList()
+        val out = ArrayList<SlotItem>()
+        for (i in 0 until inv.size) {
+            val s = inv.getItem(i) ?: continue
+            if (s.type.isAir) continue
+            out += SlotItem(i, toItemContainer(s))
+        }
+        return out
     }
 
     override fun take(at: LocationIContainer, filter: (ItemContainer) -> Boolean, max: Int): List<ItemContainer> {
@@ -51,8 +63,8 @@ class BukkitContainerAdapter : IContainerPort {
 
     private fun inventory(at: LocationIContainer): Inventory? {
         val world = Bukkit.getWorld(at.world) ?: return null
-        val v = at.vec3I
-        if (!world.isChunkLoaded(v.x shr 4, v.z shr 4)) return null
-        return (world.getBlockAt(v.x, v.y, v.z).getState(false) as? Container)?.inventory
+        val vec = at.vec3I
+        if (!world.isChunkLoaded(vec.x shr 4, vec.z shr 4)) return null
+        return (world.getBlockAt(vec.x, vec.y, vec.z).getState(false) as? Container)?.inventory
     }
 }

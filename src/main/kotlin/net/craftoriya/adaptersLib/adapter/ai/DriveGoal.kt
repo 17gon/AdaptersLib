@@ -13,7 +13,7 @@ class DriveGoal(
     private val mob: Mob
 ) : Goal<Mob> {
     private val pdc get() = mob.persistentDataContainer
-    private val key = GoalKey.of(Mob::class.java, NamespacedKey(AiKeys.plugin, "drive_${mob.type.key}"))
+    private val key = GoalKey.of(Mob::class.java, NamespacedKey(AiKeys.plugin, "drive_${mob.type.key.key}"))
 
     override fun shouldActivate(): Boolean =
         pdc.getOrDefault(AiKeys.CONTROLLED, PersistentDataType.BYTE, 0) == 1.toByte() &&

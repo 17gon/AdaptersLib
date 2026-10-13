@@ -1,2 +1,2 @@
-package net.craftoriya.adaptersLib.port
+package net.craftoriya.adaptersLib.model
 enum class TradeApplyMode { ADD, REMOVE }

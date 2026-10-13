@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.17gon"
-version = "0.2.0-SNAPSHOT"
+version = "0.2.3-SNAPSHOT"
 
 repositories {
     mavenCentral()

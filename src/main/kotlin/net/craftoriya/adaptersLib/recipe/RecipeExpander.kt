@@ -1,10 +1,5 @@
 package net.craftoriya.adaptersLib.recipe
 
-import net.craftoriya.adaptersLib.config.RecipeShapedDto
-import net.craftoriya.adaptersLib.config.RecipeShapelessDto
-import net.craftoriya.adaptersLib.config.RecipeSmeltingDto
-import net.craftoriya.adaptersLib.config.RecipeTradesDto
-import net.craftoriya.adaptersLib.config.RecipesConfig
 import net.craftoriya.adaptersLib.config.TagsConfig
 import net.craftoriya.adaptersLib.model.ItemContainer
 import net.craftoriya.adaptersLib.model.RecipeContainer

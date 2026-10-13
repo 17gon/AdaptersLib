@@ -22,12 +22,12 @@ class BukkitVillagerControlAdapter : IVillagerControlPort {
         val m = mob(id) ?: return
         val pdc = m.persistentDataContainer
         val wasHard = pdc.getOrDefault(AiKeys.HARD, PersistentDataType.BYTE, 0) == 1.toByte()
-        pdc.set(AiKeys.HARD, PersistentDataType.BYTE, if (hard) 1 else 0)
 
         if (hard && !wasHard) {
             Bukkit.getMobGoals().removeAllGoals(m)
             Bukkit.getMobGoals().addGoal(m, 0, DriveGoal(m))
         }
+        pdc.set(AiKeys.HARD, PersistentDataType.BYTE, if (hard) 1 else 0)
     }
 
     override fun setTarget(id: UUID, target: Vec3D?, speed: Double) {

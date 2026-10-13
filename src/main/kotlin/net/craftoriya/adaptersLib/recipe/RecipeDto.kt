@@ -1,8 +1,8 @@
-package net.craftoriya.adaptersLib.config
+package net.craftoriya.adaptersLib.recipe
 
 import net.craftoriya.adaptersLib.model.ItemContainer
 import net.craftoriya.adaptersLib.model.RecipeContainer
-import net.craftoriya.adaptersLib.port.TradeApplyMode
+import net.craftoriya.adaptersLib.model.TradeApplyMode
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
 @ConfigSerializable

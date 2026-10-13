@@ -3,7 +3,7 @@ package net.craftoriya.adaptersLib.adapter
 import net.craftoriya.adaptersLib.model.EntityContainer
 import net.craftoriya.adaptersLib.model.RecipeContainer
 import net.craftoriya.adaptersLib.port.ITradeBookPort
-import net.craftoriya.adaptersLib.port.TradeApplyMode
+import net.craftoriya.adaptersLib.model.TradeApplyMode
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Villager
