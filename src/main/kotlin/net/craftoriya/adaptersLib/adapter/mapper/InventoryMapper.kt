@@ -1,13 +1,13 @@
 package net.craftoriya.adaptersLib.adapter.mapper
 
 import net.craftoriya.adaptersLib.adapter.mapper.ItemStackMapper.toItemContainer
-import net.craftoriya.adaptersLib.model.CraftingGridContainer
-import net.craftoriya.adaptersLib.model.DataContainer
-import net.craftoriya.adaptersLib.model.DataValue
-import net.craftoriya.adaptersLib.model.InventoryContainer
-import net.craftoriya.adaptersLib.model.InventoryTypeDomain
-import net.craftoriya.adaptersLib.model.LocationIContainer
-import net.craftoriya.adaptersLib.model.Vec3I
+import net.craftoriya.adaptersLib.model.item.CraftingGridContainer
+import net.craftoriya.adaptersLib.model.data.DataContainer
+import net.craftoriya.adaptersLib.model.data.DataValue
+import net.craftoriya.adaptersLib.model.item.InventoryContainer
+import net.craftoriya.adaptersLib.model.item.InventoryTypeDomain
+import net.craftoriya.adaptersLib.model.math.LocationIContainer
+import net.craftoriya.adaptersLib.model.math.Vec3I
 import org.bukkit.block.TileState
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory

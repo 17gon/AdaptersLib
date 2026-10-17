@@ -1,6 +1,6 @@
 package net.craftoriya.adaptersLib.adapter.mapper
 
-import net.craftoriya.adaptersLib.model.RecipeContainer
+import net.craftoriya.adaptersLib.model.item.RecipeContainer
 import org.bukkit.entity.Villager
 
 object ProfessionMapper {

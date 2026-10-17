@@ -1,8 +1,8 @@
 package net.craftoriya.adaptersLib.adapter.mapper
 
-import net.craftoriya.adaptersLib.model.BlockContainer
-import net.craftoriya.adaptersLib.model.LocationIContainer
-import net.craftoriya.adaptersLib.model.Vec3I
+import net.craftoriya.adaptersLib.model.block.BlockContainer
+import net.craftoriya.adaptersLib.model.math.LocationIContainer
+import net.craftoriya.adaptersLib.model.math.Vec3I
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.Chest

@@ -1,8 +1,8 @@
 package net.craftoriya.adaptersLib.recipe
 
 import net.craftoriya.adaptersLib.config.TagsConfig
-import net.craftoriya.adaptersLib.model.ItemContainer
-import net.craftoriya.adaptersLib.model.RecipeContainer
+import net.craftoriya.adaptersLib.model.item.ItemContainer
+import net.craftoriya.adaptersLib.model.item.RecipeContainer
 
 typealias TradeTable = MutableMap<RecipeContainer.TradeProfession, MutableMap<Int, MutableList<RecipeContainer.Trades>>>
 

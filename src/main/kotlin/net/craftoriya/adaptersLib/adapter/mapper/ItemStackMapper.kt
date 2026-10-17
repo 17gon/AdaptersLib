@@ -1,6 +1,8 @@
 package net.craftoriya.adaptersLib.adapter.mapper
 
-import net.craftoriya.adaptersLib.model.ItemContainer
+import net.craftoriya.adaptersLib.model.item.ItemContainer
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
@@ -15,8 +17,8 @@ internal object ItemStackMapper {
 
         val meta = item.itemMeta
         if (meta != null) {
-            if (container.name.isNotEmpty()) meta.setDisplayName(container.name)
-            container.properties["lore"]?.let { meta.lore = listOf(it) }
+            if (container.name.isNotEmpty()) meta.displayName(Component.text(container.name))
+            container.properties["lore"]?.let { meta.lore(listOf(Component.text(it))) }
             item.itemMeta = meta
         }
 
@@ -40,7 +42,7 @@ internal object ItemStackMapper {
             }
         }
         return ItemContainer(
-            item.itemMeta?.displayName()?.toString() ?: "",
+            item.itemMeta?.displayName()?.let { PlainTextComponentSerializer.plainText().serialize(it) } ?: "",
             item.type.toString(),
             item.amount,
             data

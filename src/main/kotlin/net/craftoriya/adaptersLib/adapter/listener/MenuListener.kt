@@ -1,11 +1,11 @@
 package net.craftoriya.adaptersLib.adapter.listener
 
-import net.craftoriya.adaptersLib.adapter.MenuHolder
+import net.craftoriya.adaptersLib.adapter.ui.MenuHolder
 import net.craftoriya.adaptersLib.adapter.mapper.PlayerMapper
 import net.craftoriya.adaptersLib.event.DomainEventBus
-import net.craftoriya.adaptersLib.event.domainevents.DomainMenuClickEvent
-import net.craftoriya.adaptersLib.event.domainevents.DomainMenuCloseEvent
-import net.craftoriya.adaptersLib.model.MenuClick
+import net.craftoriya.adaptersLib.event.domainevents.menu.DomainMenuClickEvent
+import net.craftoriya.adaptersLib.event.domainevents.menu.DomainMenuCloseEvent
+import net.craftoriya.adaptersLib.model.menu.MenuClick
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority

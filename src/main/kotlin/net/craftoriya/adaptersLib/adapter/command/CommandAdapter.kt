@@ -3,10 +3,10 @@ package net.craftoriya.adaptersLib.adapter.command
 import io.papermc.paper.command.brigadier.BasicCommand
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import net.craftoriya.adaptersLib.event.DomainEventBus
-import net.craftoriya.adaptersLib.event.domainevents.DomainCommandEvent
-import net.craftoriya.adaptersLib.model.CommandContext
-import net.craftoriya.adaptersLib.model.CommandSpec
-import net.craftoriya.adaptersLib.model.Vec3I
+import net.craftoriya.adaptersLib.event.domainevents.player.DomainCommandEvent
+import net.craftoriya.adaptersLib.model.command.CommandContext
+import net.craftoriya.adaptersLib.model.command.CommandSpec
+import net.craftoriya.adaptersLib.model.math.Vec3I
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player

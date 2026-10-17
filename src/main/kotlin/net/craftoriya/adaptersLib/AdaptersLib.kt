@@ -1,6 +1,6 @@
 package net.craftoriya.adaptersLib
 
-import net.craftoriya.adaptersLib.adapter.ai.AiKeys
+import net.craftoriya.adaptersLib.adapter.entity.AiKeys
 import net.craftoriya.adaptersLib.config.ConfigLoader
 import net.craftoriya.adaptersLib.config.ConfigLoaderConfiguratorBuilder
 import net.craftoriya.adaptersLib.event.DomainEventBus

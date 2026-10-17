@@ -1,7 +1,7 @@
 package net.craftoriya.adaptersLib.adapter.listener
 
-import net.craftoriya.adaptersLib.adapter.ai.AiKeys
-import net.craftoriya.adaptersLib.adapter.ai.DriveGoal
+import net.craftoriya.adaptersLib.adapter.entity.AiKeys
+import net.craftoriya.adaptersLib.adapter.entity.DriveGoal
 import net.craftoriya.adaptersLib.event.DomainEventBus
 import org.bukkit.Bukkit
 import org.bukkit.entity.Mob

@@ -1,6 +1,6 @@
 package net.craftoriya.adaptersLib.adapter.command
 
-import net.craftoriya.adaptersLib.port.CommandResponsePort
+import net.craftoriya.adaptersLib.port.ui.CommandResponsePort
 import org.bukkit.command.CommandSender
 
 internal class BukkitCommandResponse(

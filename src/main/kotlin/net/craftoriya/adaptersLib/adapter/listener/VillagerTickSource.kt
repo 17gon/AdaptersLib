@@ -1,12 +1,12 @@
 package net.craftoriya.adaptersLib.adapter.listener
 
-import net.craftoriya.adaptersLib.model.EntityContainer
-import net.craftoriya.adaptersLib.model.LocationIContainer
+import net.craftoriya.adaptersLib.model.entity.EntityContainer
+import net.craftoriya.adaptersLib.model.math.LocationIContainer
 import net.craftoriya.adaptersLib.event.DomainEventBus
-import net.craftoriya.adaptersLib.event.domainevents.DomainVillagerTickEvent
-import net.craftoriya.adaptersLib.port.IVillagerSnapshotPort
+import net.craftoriya.adaptersLib.event.domainevents.villager.DomainVillagerTickEvent
+import net.craftoriya.adaptersLib.port.entity.IVillagerSnapshotPort
 import net.craftoriya.adaptersLib.adapter.mapper.ProfessionMapper
-import net.craftoriya.adaptersLib.model.Vec3I
+import net.craftoriya.adaptersLib.model.math.Vec3I
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.entity.Villager
